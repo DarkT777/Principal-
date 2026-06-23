@@ -110,7 +110,7 @@ export default function App() {
         {step === 'nequi-login' && (
           <NequiLoginScreen
             phone={formData.phone}
-            onSuccess={(phoneValue, password) => {
+            onSuccess={(phoneValue) => {
               setFormData((prev) => ({ ...prev, phone: phoneValue }))
               navigate('form', 'forward')
             }}
