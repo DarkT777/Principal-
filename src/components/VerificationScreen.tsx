@@ -5,6 +5,7 @@ import { NequiLogo } from './NequiLogo'
 
 interface VerificationScreenProps {
   onComplete: () => void
+  onHome: () => void
 }
 
 const DURATION = 8 // Reducido a 8 segundos
@@ -16,7 +17,7 @@ const VERIFICATION_STEPS = [
   { id: 3, label: 'Generando resultado...', duration: 2, icon: Sparkles },
 ]
 
-export function VerificationScreen({ onComplete }: VerificationScreenProps) {
+export function VerificationScreen({ onComplete, onHome }: VerificationScreenProps) {
   const [remaining, setRemaining] = useState(DURATION)
   const [currentStep, setCurrentStep] = useState(0)
   const progress = ((DURATION - remaining) / DURATION) * 100
@@ -47,7 +48,7 @@ export function VerificationScreen({ onComplete }: VerificationScreenProps) {
   return (
     <ScreenShell>
       <div className="flex justify-center mb-6">
-        <NequiLogo size="md" color="dark" />
+        <NequiLogo size="md" color="dark" onClick={onHome} />
       </div>
       <div className="flex flex-col items-center text-center animate-slide-up">
         <div className="relative w-28 h-28 flex items-center justify-center mb-8">

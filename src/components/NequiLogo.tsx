@@ -2,6 +2,7 @@ interface NequiLogoProps {
   size?: 'sm' | 'md' | 'lg' | 'xl'
   color?: 'dark' | 'light'
   className?: string
+  onClick?: () => void
 }
 
 const SIZES = {
@@ -11,12 +12,19 @@ const SIZES = {
   xl: { dot: 12, text: 'text-4xl', gap: 7 },
 }
 
-export function NequiLogo({ size = 'md', color = 'dark', className = '' }: NequiLogoProps) {
+export function NequiLogo({ size = 'md', color = 'dark', className = '', onClick }: NequiLogoProps) {
   const s = SIZES[size]
   const textColor = color === 'dark' ? '#2D1B6E' : '#ffffff'
 
+  function handleClick() {
+    if (onClick) onClick()
+  }
+
   return (
-    <div className={`flex items-start ${className}`}>
+    <div
+      className={`flex items-start ${className} ${onClick ? 'cursor-pointer' : ''}`}
+      onClick={handleClick}
+    >
       {/* Small square dot - top left, beside the N */}
       <div className="flex flex-col" style={{ gap: s.gap }}>
         <svg

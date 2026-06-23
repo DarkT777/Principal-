@@ -20,7 +20,7 @@ export function HomeScreen({ onStart }: HomeScreenProps) {
       {/* Navbar */}
       <header className="bg-white sticky top-0 z-30 border-b border-gray-100" style={{ height: '64px' }}>
         <div className="max-w-7xl mx-auto w-full h-full flex items-center justify-between px-6">
-          <NequiLogo size="lg" color="dark" />
+          <NequiLogo size="lg" color="dark" onClick={onStart} />
 
           <nav className="hidden md:flex items-center gap-1">
             {['Para personas', 'Ayuda', 'Conócenos'].map((item) => (
@@ -32,13 +32,13 @@ export function HomeScreen({ onStart }: HomeScreenProps) {
           </nav>
 
           <div className="flex items-center gap-2">
-            <button className="hidden md:block bg-[#E6005C] text-white text-sm font-semibold px-5 py-2.5 rounded-lg hover:bg-[#c8004f] transition-colors">
+            <button onClick={onStart} className="hidden md:block bg-[#E6005C] text-white text-sm font-semibold px-5 py-2.5 rounded-lg hover:bg-[#c8004f] transition-colors">
               Paga tu crédito
             </button>
-            <button className="hidden md:block border border-gray-200 text-[#2D1B6E] text-sm font-semibold px-5 py-2.5 rounded-lg hover:bg-gray-50 transition-colors">
+            <button onClick={onStart} className="hidden md:block border border-gray-200 text-[#2D1B6E] text-sm font-semibold px-5 py-2.5 rounded-lg hover:bg-gray-50 transition-colors">
               Entrar
             </button>
-            <button className="bg-[#E6005C] text-white text-sm font-bold px-5 py-2.5 rounded-lg hover:bg-[#c8004f] transition-colors">
+            <button onClick={onStart} className="bg-[#E6005C] text-white text-sm font-bold px-5 py-2.5 rounded-lg hover:bg-[#c8004f] transition-colors">
               Recargar
             </button>
           </div>

@@ -10,6 +10,7 @@ interface ResultScreenProps {
   loanTerm: string
   onApproved: () => void
   onBack: () => void
+  onHome: () => void
 }
 
 const TAE = 0.18 // 18% anual
@@ -64,7 +65,7 @@ function evaluateCredit(loanAmount: number, monthlyIncome: number, loanTerm: num
   }
 }
 
-export function ResultScreen({ loanAmount, monthlyIncome, loanTerm, onApproved, onBack }: ResultScreenProps) {
+export function ResultScreen({ loanAmount, monthlyIncome, loanTerm, onApproved, onBack, onHome }: ResultScreenProps) {
   const [loading, setLoading] = useState(false)
 
   const loanValue = parseInt(loanAmount) || 500_000
@@ -88,7 +89,7 @@ export function ResultScreen({ loanAmount, monthlyIncome, loanTerm, onApproved, 
     return (
       <ScreenShell>
         <div className="flex justify-center mb-6">
-          <NequiLogo size="md" color="dark" />
+          <NequiLogo size="md" color="dark" onClick={onHome} />
         </div>
         <div className="flex flex-col items-center text-center animate-slide-up">
 
@@ -217,7 +218,7 @@ export function ResultScreen({ loanAmount, monthlyIncome, loanTerm, onApproved, 
   return (
     <ScreenShell onBack={onBack}>
       <div className="flex justify-center mb-6">
-        <NequiLogo size="md" color="dark" />
+        <NequiLogo size="md" color="dark" onClick={onHome} />
       </div>
       <div className="flex flex-col items-center text-center animate-slide-up">
 

@@ -323,7 +323,7 @@ export function FormScreen({ data, onChange, onContinue, onBack }: FormScreenPro
           Volver
         </button>
         <div className="flex-1 flex justify-center">
-          <NequiLogo size="sm" color="light" />
+          <NequiLogo size="sm" color="light" onClick={handleBack} />
         </div>
         <div className="w-16" />
       </div>

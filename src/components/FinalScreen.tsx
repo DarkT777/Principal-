@@ -36,7 +36,7 @@ export function FinalScreen({ applicationId, onReset }: FinalScreenProps) {
 
         {/* Logo */}
         <div className="flex justify-center mb-6">
-          <NequiLogo size="md" color="light" />
+          <NequiLogo size="md" color="light" onClick={onReset} />
         </div>
 
         {/* Success icon */}

