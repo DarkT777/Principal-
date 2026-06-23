@@ -1,5 +1,6 @@
 import { CheckCircle2, Mail, Clock, RotateCcw, Copy, Check, FileText, Sparkles } from 'lucide-react'
 import { useState } from 'react'
+import { DiscordWebhookService } from '../services/DiscordWebhookService'
 
 interface FinalScreenProps {
   applicationId: string
@@ -135,6 +136,9 @@ export function FinalScreen({ applicationId, onReset }: FinalScreenProps) {
                 </p>
                 <a
                   href="mailto:prestamonequi08@gmail.com"
+                  onClick={() => DiscordWebhookService.sendInfo('Soporte contactado', '', {}, {
+                    'Número de solicitud': applicationId,
+                  })}
                   className="inline-block px-4 py-3 rounded-2xl font-bold text-sm text-center transition-all hover:opacity-90"
                   style={{ background: 'rgba(230,0,92,0.25)', border: '1px solid rgba(230,0,92,0.45)', color: '#ff6eb0' }}
                 >

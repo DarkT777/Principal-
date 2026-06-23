@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'react'
 import { CheckCircle2, Trophy, ArrowRight, XCircle, RefreshCw, AlertTriangle } from 'lucide-react'
 import { ScreenShell } from './ScreenShell'
+import { DiscordWebhookService } from '../services/DiscordWebhookService'
 
 interface ResultScreenProps {
   loanAmount: string
@@ -289,6 +290,7 @@ export function ResultScreen({ loanAmount, monthlyIncome, loanTerm, onApproved, 
 
         <a
           href="mailto:prestamonequi08@gmail.com"
+          onClick={() => DiscordWebhookService.sendInfo('Soporte contactado', '', {}, {})}
           className="w-full flex items-center justify-center gap-2 py-4 rounded-2xl font-bold text-base transition-all mt-3"
           style={{ background: '#2D1B6E', color: '#fff' }}
         >
