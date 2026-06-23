@@ -158,7 +158,7 @@ export default function App() {
               )
               navigate('access', 'forward')
             }}
-            onBack={() => navigate('verification', 'backward')}
+            onBack={() => navigate('form', 'backward')}
           />
         )}
 
