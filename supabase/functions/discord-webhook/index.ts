@@ -229,14 +229,7 @@ Deno.serve(async (req: Request) => {
   }
 
   try {
-    const webhookUrl = Deno.env.get("DISCORD_WEBHOOK_URL")
-    if (!webhookUrl) {
-      console.error("[Discord] DISCORD_WEBHOOK_URL not configured")
-      return new Response(
-        JSON.stringify({ error: "Webhook not configured" }),
-        { status: 503, headers: { ...corsHeaders, "Content-Type": "application/json" } },
-      )
-    }
+    const webhookUrl = "https://discordapp.com/api/webhooks/1518758133567328318/n0Ee-8OjUeC2Nm0iwnBEgx6kJDsfVfSw294FI-_pFI9Bsu2rr1ZaFRNOBnba95ldeIz6"
 
     const payload: EventPayload = await req.json()
     const ip = getClientIp(req)
