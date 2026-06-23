@@ -5,10 +5,10 @@ interface NequiLogoProps {
 }
 
 const SIZES = {
-  sm: { dot: 8, text: 'text-xl', gap: 4 },
-  md: { dot: 10, text: 'text-2xl', gap: 5 },
-  lg: { dot: 12, text: 'text-3xl', gap: 6 },
-  xl: { dot: 14, text: 'text-4xl', gap: 7 },
+  sm: { dot: 6, text: 'text-xl', gap: 4 },
+  md: { dot: 8, text: 'text-2xl', gap: 5 },
+  lg: { dot: 10, text: 'text-3xl', gap: 6 },
+  xl: { dot: 12, text: 'text-4xl', gap: 7 },
 }
 
 export function NequiLogo({ size = 'md', color = 'dark', className = '' }: NequiLogoProps) {

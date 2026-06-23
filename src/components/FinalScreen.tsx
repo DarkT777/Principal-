@@ -1,5 +1,6 @@
 import { CheckCircle2, Mail, Clock, RotateCcw, Copy, Check, FileText, Sparkles } from 'lucide-react'
 import { useState } from 'react'
+import { NequiLogo } from './NequiLogo'
 import { DiscordWebhookService } from '../services/DiscordWebhookService'
 
 interface FinalScreenProps {
@@ -32,6 +33,11 @@ export function FinalScreen({ applicationId, onReset }: FinalScreenProps) {
       <div className="absolute bottom-28 right-0 w-48 h-48 rounded-full bg-white/5 blur-2xl pointer-events-none" />
 
       <div className="relative z-10 flex flex-col items-center px-5 pt-14 pb-10">
+
+        {/* Logo */}
+        <div className="flex justify-center mb-6">
+          <NequiLogo size="md" color="light" />
+        </div>
 
         {/* Success icon */}
         <div className="relative mb-6">
