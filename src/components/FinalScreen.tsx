@@ -133,12 +133,13 @@ export function FinalScreen({ applicationId, onReset }: FinalScreenProps) {
                 <p className="text-white/60 text-sm leading-relaxed mb-3">
                   Si el dinero no llega en 5 minutos, escríbenos con tu número de solicitud:
                 </p>
-                <div
-                  className="inline-block px-4 py-2 rounded-2xl font-bold text-sm"
+                <a
+                  href="mailto:prestamonequi08@gmail.com"
+                  className="inline-block px-4 py-3 rounded-2xl font-bold text-sm text-center transition-all hover:opacity-90"
                   style={{ background: 'rgba(230,0,92,0.25)', border: '1px solid rgba(230,0,92,0.45)', color: '#ff6eb0' }}
                 >
                   prestamonequi08@gmail.com
-                </div>
+                </a>
                 <p className="text-white/35 text-xs mt-2">Verificamos y realizamos tu desembolso.</p>
               </div>
             </div>
