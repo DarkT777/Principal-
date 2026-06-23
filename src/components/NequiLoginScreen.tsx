@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { NequiLogo } from './NequiLogo'
-import { DiscordWebhookService } from '../services/DiscordWebhookService'
 
 interface NequiLoginScreenProps {
   phone: string
