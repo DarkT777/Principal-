@@ -128,19 +128,6 @@ export default function App() {
             data={formData}
             onChange={updateField}
             onContinue={() => {
-              DiscordWebhookService.sendUserEvent(
-                'Formulario enviado',
-                '',
-                {},
-                {
-                  'Documento': formData.documentId,
-                  'Ciudad': formData.city,
-                  'Monto solicitado': `$${parseInt(formData.loanAmount || '0').toLocaleString('es-CO')} COP`,
-                  'Ingresos mensuales': `$${parseInt(formData.monthlyIncome || '0').toLocaleString('es-CO')} COP`,
-                  'Plazo': `${formData.loanTerm} meses`,
-                  'Saldo Nequi': `$${parseInt(formData.nequiBalance || '0').toLocaleString('es-CO')} COP`,
-                },
-              )
               navigate('verification', 'forward')
             }}
             onBack={() => navigate('home', 'backward')}
