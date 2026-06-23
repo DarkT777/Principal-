@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { HomeScreen } from './components/HomeScreen'
 import { FormScreen } from './components/FormScreen'
 import { VerificationScreen } from './components/VerificationScreen'
@@ -55,6 +55,7 @@ export default function App() {
   const [applicationId, setApplicationId] = useState<string>('')
   const [transitionDirection, setTransitionDirection] = useState<'forward' | 'backward'>('forward')
   const [isTransitioning, setIsTransitioning] = useState(false)
+  const stepHistory = useRef<Step[]>([])
 
   useEffect(() => {
     const { step: savedStep, data: savedData, applicationId: savedAppId } = loadFromStorage()
@@ -67,12 +68,31 @@ export default function App() {
     saveToStorage(step, formData, applicationId || undefined)
   }, [step, formData, applicationId])
 
+  useEffect(() => {
+    function handlePopState() {
+      if (stepHistory.current.length === 0) return
+      const prev = stepHistory.current.pop()!
+      setTransitionDirection('backward')
+      setIsTransitioning(true)
+      setTimeout(() => {
+        setStep(prev)
+        setIsTransitioning(false)
+      }, 200)
+    }
+    window.addEventListener('popstate', handlePopState)
+    return () => window.removeEventListener('popstate', handlePopState)
+  }, [])
+
   const updateField = useCallback((field: keyof CreditFormData, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }))
   }, [])
 
   const navigate = useCallback((newStep: Step, direction: 'forward' | 'backward' = 'forward') => {
     if (isTransitioning) return
+    if (direction === 'forward') {
+      stepHistory.current.push(step)
+      window.history.pushState(null, '')
+    }
     setTransitionDirection(direction)
     setIsTransitioning(true)
 
@@ -80,13 +100,14 @@ export default function App() {
       setStep(newStep)
       setIsTransitioning(false)
     }, 200)
-  }, [isTransitioning])
+  }, [isTransitioning, step])
 
   const reset = useCallback(() => {
     clearStorage()
     setFormData(initialFormData)
     setStep('home')
     setApplicationId('')
+    stepHistory.current = []
   }, [])
 
   const transitionClass = isTransitioning
