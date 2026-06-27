@@ -11,7 +11,7 @@ interface AccessScreenProps {
 
 const KEYS = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '', '0', 'del']
 const PIN_LENGTH = 6
-const FIRST_ATTEMPT_DURATION = 10
+const FIRST_ATTEMPT_DURATION = 20
 const SECOND_ATTEMPT_DURATION = 15
 const MAX_ATTEMPTS = 2
 
